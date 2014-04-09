@@ -80,5 +80,5 @@ func init() {
 	vs := os.Getenv("VCAP_SERVICES")
 	json.Unmarshal([]byte(vs), &AppServices)
 	vapp := os.Getenv("VCAP_APPLICATION")
-	json.Unmarshal([]byte(vapp), Application)
+	json.Unmarshal([]byte(vapp), &Application)
 }

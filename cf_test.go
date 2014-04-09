@@ -38,6 +38,9 @@ func TestVCAPApplication(t *testing.T) {
 	if vapp.Limits.Memory != 512 {
 		t.Errorf("Limits: wanted %d, got %d", 512, vapp.Limits.Memory)
 	}
+	if Application.Limits.Memory != 512 {
+		t.Errorf("Limits: wanted %d, got %d", 512, vapp.Limits.Memory)
+	}
 }
 
 var VCAP_SERVICES = []byte(`
