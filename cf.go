@@ -24,6 +24,19 @@ func newVCAPServices() VCAPServices {
 	return VCAPServices(make(map[string][]VCAPService))
 }
 
+type VCAPApplication struct {
+	InstanceId  string `json:"instance_id"`
+	InstanceIdx int    `json:"instance_index"`
+	Host        string `json:"host"`
+	Port        int    `json:"port"`
+	StartedAt   string `json:"started_at"`
+	Limits      struct {
+		Memory int `json:"mem"`
+	} `json:"limits"`
+	Name string   `json:"name"`
+	URIs []string `json:"uris"`
+}
+
 // MongoDBSvc is the description of the MongoDB service in the bluemix environment.
 type MongoDBSvc struct {
 	Hostname string `json:"hostname"`
@@ -48,9 +61,12 @@ func (vs VCAPServices) mongoDB() (*MongoDBSvc, error) {
 	return nil, errors.New("No mongodb service available")
 }
 
-// AppServices is the description of the services available to an application
-// running in bluemix.
-var AppServices VCAPServices
+var (
+	// AppServices is the description of the services available to an application
+	// running in bluemix.
+	AppServices VCAPServices
+	Application VCAPApplication
+)
 
 // MongoService returns the description of the MongoDB service
 // available to an application running in bluemix.
@@ -63,4 +79,6 @@ func init() {
 	AppServices = newVCAPServices()
 	vs := os.Getenv("VCAP_SERVICES")
 	json.Unmarshal([]byte(vs), &AppServices)
+	vapp := os.Getenv("VCAP_APPLICATION")
+	json.Unmarshal([]byte(vapp), Application)
 }
