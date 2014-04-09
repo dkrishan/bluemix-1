@@ -1,3 +1,5 @@
+// Package bluemix implements facilities for
+// dealing with IBM bluemix environment.
 package bluemix
 
 import (
@@ -5,6 +7,10 @@ import (
 	"os"
 )
 
+// vCAPService represents the contents of Cloud Foundry's VCAP_SERVICES environment variable.
+type VCAPServices map[string][]VCAPService
+
+// VCAPService represents the contents of an entry in Cloud Foundry's VCAP_SERVICES environment variable.
 type VCAPService struct {
 	Name        string   `json:"name"`
 	Label       string   `json:"label,omitempty"`
@@ -13,12 +19,11 @@ type VCAPService struct {
 	Credentials json.RawMessage
 }
 
-type VCAPServices map[string][]VCAPService
-
 func newVCAPServices() VCAPServices {
 	return VCAPServices(make(map[string][]VCAPService))
 }
 
+// MongoDBSvc is the description of the MongoDB service in the bluemix environment.
 type MongoDBSvc struct {
 	Hostname string `json:"hostname"`
 	Host     string `json:"host"`
@@ -44,8 +49,13 @@ func (vs VCAPServices) mongoDB() *MongoDBSvc {
 	return nil
 }
 
+// AppServices is the description of the services available to an application
+// running in bluemix.
 var AppServices VCAPServices
 
+// MongoService returns the description of the MongoDB service
+// available to an application running in bluemix.
+// In case that there is no MongoDB service available it returns nil.
 func MongoService() *MongoDBSvc {
 	return AppServices.mongoDB()
 }
