@@ -2,6 +2,7 @@ package bluemix
 
 import (
 	"encoding/json"
+	"log"
 	"testing"
 )
 
@@ -14,14 +15,15 @@ func TestUnmarshal(t *testing.T) {
 }
 
 func TestMongoService(t *testing.T) {
-	v := newVCAPServices()
-	err := json.Unmarshal(VCAP_SERVICES, &v)
+	AppServices = newVCAPServices()
+	err := json.Unmarshal(VCAP_SERVICES, &AppServices)
 	if err != nil {
 		t.Fatal(err)
 	}
-	mongo := v.mongoDB()
-	if mongo == nil {
-		t.Fatal("unexpected configuration")
+	mongo, err := MongoService()
+	if err != nil {
+		log.Println(AppServices)
+		t.Fatal(err)
 	}
 	expurl := "mongodb://be879069-b273-4656-b5fb-3daa5c508044:f268582e-0a52-42a8-9b97-66889a9cb662@10.0.116.49:10001/db"
 	if mongo.URL != expurl {

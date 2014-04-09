@@ -4,10 +4,11 @@ package bluemix
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 )
 
-// vCAPService represents the contents of Cloud Foundry's VCAP_SERVICES environment variable.
+// VCAPService represents the contents of Cloud Foundry's VCAP_SERVICES environment variable.
 type VCAPServices map[string][]VCAPService
 
 // VCAPService represents the contents of an entry in Cloud Foundry's VCAP_SERVICES environment variable.
@@ -35,18 +36,16 @@ type MongoDBSvc struct {
 	URL      string `json:"url"`
 }
 
-func (vs VCAPServices) mongoDB() *MongoDBSvc {
-	v := vs["mongodb-2.2"]
-	if v != nil && len(v) > 0 {
+func (vs VCAPServices) mongoDB() (*MongoDBSvc, error) {
+	if v, ok := vs["mongodb-2.2"]; ok {
 		var m MongoDBSvc
 		err := json.Unmarshal(v[0].Credentials, &m)
 		if err != nil {
-			return nil
+			return nil, err
 		}
-		return &m
+		return &m, nil
 	}
-
-	return nil
+	return nil, errors.New("No mongodb service available")
 }
 
 // AppServices is the description of the services available to an application
@@ -56,7 +55,7 @@ var AppServices VCAPServices
 // MongoService returns the description of the MongoDB service
 // available to an application running in bluemix.
 // In case that there is no MongoDB service available it returns nil.
-func MongoService() *MongoDBSvc {
+func MongoService() (*MongoDBSvc, error) {
 	return AppServices.mongoDB()
 }
 
