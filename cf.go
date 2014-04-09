@@ -60,7 +60,7 @@ func MongoService() (*MongoDBSvc, error) {
 }
 
 func init() {
-	AppServices := newVCAPServices()
+	AppServices = newVCAPServices()
 	vs := os.Getenv("VCAP_SERVICES")
 	json.Unmarshal([]byte(vs), &AppServices)
 }
