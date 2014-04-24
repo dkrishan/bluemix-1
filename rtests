@@ -1,0 +1,8 @@
+#!/bin/sh
+
+VCAP_APPLICATION='{"instance_id":"6b907d228cd34e09a09e7ac9492c3627","instance_index":0,"host":"0.0.0.0","port":61243,"started_at":"2014-04-09 23:33:28 +0000","started_at_timestamp":1397086408,"start":"2014-04-09 23:33:28 +0000","state_timestamp":1397086408,"limits":{"mem":512,"disk":1024,"fds":16384},"application_version":"ccf32999-ac51-4e3c-bfb7-ab9eb9b799a5","application_name":"gbmhello","application_uris":["gbmhello.ng.bluemix.net"],"version":"ccf32999-ac51-4e3c-bfb7-ab9eb9b799a5","name":"gbmhello","uris":["localhost"],"users":null}'
+VCAP_SERVICES='{"mongodb-2.2":[{"name":"mongodb-ye","label":"mongodb-2.2","tags":[],"plan":"100","credentials":{"hostname":"50.23.230.141","host":"50.23.230.141","port":10165,"username":"4d24a6cf-8509-48b2-8937-1c2544de6f10","password":"a5a93a60-83be-492b-98f8-9b930226c3e9","name":"e8a0108e-3c4d-4657-b9d4-6c8d6a6da27e","db":"db","url":"localhost"}}]}'
+VCAP_APP_PORT=9080
+export VCAP_APPLICATION VCAP_SERVICES VCAP_APP_PORT
+
+go test -v

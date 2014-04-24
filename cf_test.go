@@ -39,7 +39,7 @@ func TestVCAPApplication(t *testing.T) {
 		t.Errorf("Limits: wanted %d, got %d", 512, vapp.Limits.Memory)
 	}
 	if Application.Limits.Memory != 512 {
-		t.Errorf("Limits: wanted %d, got %d", 512, vapp.Limits.Memory)
+		t.Errorf("Limits: wanted %d, got %d", 512, Application.Limits.Memory)
 	}
 }
 
